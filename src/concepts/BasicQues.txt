@@ -1,0 +1,48 @@
+
+1) What is the differnece between state and props ?
+
+->State is data that belongs to a component and can change over time.
+->Props are data passed from a parent component to a child component.
+
+2) When does useEffcect() run ?
+-> 
+.useEffect runs after the component renders.
+.With no dependency array → runs after every render
+.With empty array [] → runs once on mount
+.With dependencies → runs when those values change
+
+3) What is React ?
+-> React is javascript library for building user interface, it uses virtual DOM for the efficient update of UI.
+
+4) What is virtual DOM ?
+-> virtual DOM is the lightweight copy of actual DOM. whenever user changes something in react it first reflect on v.DOM then it compare to the r.DOM after comparison the o.DOM not the whole component it chnages the particular segement where the change made.
+
+5)what is useState() ?
+-> useState() allows track/update the state in a component.
+
+6) what is JSX ?
+-> jsx is syntax extension, where js allows to HTML write inside it .
+
+7) what is component ?
+-> Component is a reusable block of code .
+
+//doubt 
+8)What is lifting state up ?
+->Lifting state up means moving state to a common parent component so multiple child components can share the same data.
+
+9)What is a controlled component ?
+->A controlled component is form element whoose value is controlled by Reeact state.
+
+
+10) why do we use 'key' in lists ?
+-> key gives the uniques the identification that helps react to know which item added,changed, removed.
+
+11) What happens if we update state directly without setState() ?
+->React will not re-render the compoent beacuse it doesnot detect that the state has changed.
+
+12)Why can’t we use hooks inside loops or conditions ?
+->React uses the order of hook calls to track state internally. Changing that order breaks the hook state management system.
+
+
+13) what causes infinite loop in useEffect() ?
+-> it happens because the value changed inside the useEffcect(), also listed as dependency.
