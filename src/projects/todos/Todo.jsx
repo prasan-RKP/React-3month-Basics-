@@ -33,6 +33,10 @@ const Todo = () => {
          setEdit(true);
     }
 
+    const deleteAll = () => {
+        setTodos([]);
+    }
+
 
     const onEditTodo = (e) => {
         e.preventDefault();
@@ -106,7 +110,10 @@ const Todo = () => {
                                 </button>
 
                                 {/* Delete Button */}
-                                <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-lg transition">
+                                <button
+                                type="button"
+                                onClick={deleteAll} 
+                                className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-lg transition">
                                     Delete All
                                 </button>
 
