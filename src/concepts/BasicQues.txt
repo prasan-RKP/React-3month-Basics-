@@ -32,7 +32,7 @@
 
 9)What is a controlled component ?
 ->A controlled component is form element whoose value is controlled by Reeact state.
-
+ 
 
 10) why do we use 'key' in lists ?
 -> key gives the uniques the identification that helps react to know which item added,changed, removed.
