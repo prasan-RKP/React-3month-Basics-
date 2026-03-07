@@ -30,6 +30,10 @@
 8)What is lifting state up ?
 ->Lifting state up means moving state to a common parent component so multiple child components can share the same data.
 
+-> Lifting state up means when two child components need to share data but cannot communicate directly, the state is moved to their common parent. One child updates the state, and the parent passes the updated value to other children.
+
+
+
 9)What is a controlled component ?
 ->A controlled component is form element whoose value is controlled by Reeact state.
  
@@ -38,7 +42,7 @@
 -> key gives the uniques the identification that helps react to know which item added,changed, removed.
 
 11) What happens if we update state directly without setState() ?
-->React will not re-render the compoent beacuse it doesnot detect that the state has changed.
+->React will not re-render the component beacuse it doesnot detect that the state has changed.
 
 12)Why can’t we use hooks inside loops or conditions ?
 ->React uses the order of hook calls to track state internally. Changing that order breaks the hook state management system.

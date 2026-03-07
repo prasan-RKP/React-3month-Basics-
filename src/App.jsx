@@ -5,13 +5,17 @@ import Todo from './projects/todos/Todo'
 import ShopHomepage from './projects/Mini E-Com/ShopHomepage'
 import AddToCart from './projects/Mini E-Com/assets/AddToCart'
 import {Routes, Route, Navigate} from 'react-router-dom';
+import PassGen from './projects/PassGenerator/PassGen'
+import LiftUp from './projects/LiftingUP/LiftUp'
 
 function App() {
 
   return (
     <>
-    <ShopHomepage />
+    {/* <ShopHomepage /> */}
     {/* <AddToCart /> */}
+    {/* <PassGen /> */}
+    <LiftUp />
     </>
   )
 }

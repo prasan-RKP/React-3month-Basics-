@@ -258,6 +258,7 @@ const PassGen = () => {
 
           {/* Generate Button */}
           <button
+          onClick={createPassword}
             className="w-full py-4 rounded-xl font-black text-sm tracking-[0.2em] uppercase text-black transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: "linear-gradient(135deg, #22d3ee, #06b6d4)",

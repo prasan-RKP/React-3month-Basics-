@@ -1,0 +1,32 @@
+Q.1) Differnece between useRef() & useState() ?
+->useState -> stores data and re-render when value changes
+-> useRef -> store Value but doesnot re-rende oftern use to access to DOM elements
+
+
+Q.2) What is prop-drilling ?
+->Prop drilling is when you pass the data from parent to child -> grand Child -> more deeper components even if intermediate components doensot needed it.
+
+
+Q.3) Functional vs Class Compoent ?
+->Functional Compoent : 
+  i)Simple javascript Function
+  ii) Use hooks (useState, useEffcect)
+  iii) Modern and recommended way
+
+->Class Component
+i) Use 'class' keyword.
+ii)Use lifecycle methods
+iii) uses this.state and this.setState()  
+
+
+
+Q.4) What is React Fragment ?
+-> The React Fragment is an invisible wrapper inside the wrapper multiple elements without using a extra DOM node.
+
+
+Q.5)What is Conditional Rendering ?
+-> Showing UI based on condition.
+
+
+Q.6)What is Memoization ? (React.memo)
+->'React.memo' prevents re-rendering of a component if props have not chnaged it improves performance.
