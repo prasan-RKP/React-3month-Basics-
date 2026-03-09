@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "../../../stylesheets/weat.css";
+//import "../stylesheets/weat.css";
 
 const MyWeather = () => {
 
