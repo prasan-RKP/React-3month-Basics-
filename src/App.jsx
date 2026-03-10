@@ -9,7 +9,7 @@ import LiftUp from './projects/LiftingUP/LiftUp'
 import MyWeather from './projects/API projects/WeatherAPI/MyWeather'
 import MovieSearch from './projects/API projects/Movie API/MovieSearch'
 import MyTodo from './projects/todos/MyTodo'
-import NewTodo from './projects/todos/NewTodo'
+//import NewTodo from './projects/todos/NewTodo'
 
 
 function App() {
@@ -22,8 +22,8 @@ function App() {
     {/* <LiftUp /> */}
      {/* <MyWeather /> */}
      {/* <MovieSearch /> */}
-     {/* <MyTodo /> */}
-     <NewTodo />
+     <MyTodo />
+     {/* <NewTodo /> */}
     </>
   )
 }

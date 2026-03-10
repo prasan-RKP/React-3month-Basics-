@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import EditModal from './modals/EditModal';
 
 
@@ -11,7 +11,7 @@ const MyTodo = () => {
     let [editText, setEditText] = useState('');
     let [loading, setLoading] = useState(false);
     let [category, setCategory] = useState('all'); // Default category
-    let [filteredTodos, setFilteredTodos] = useState([]);
+    //let [myTimeStamp, setMyTimeStamp] = useState("timestamp");
 
     //let [crossLine, setCrossLine] = useState("");
 
@@ -22,7 +22,7 @@ const MyTodo = () => {
         if (!todoVal.trim()) return alert("Please Add a Todo");
         setTodos(t => [
             ...t,
-            { uid: Date.now().toString(36).slice(-4), text: todoVal, marked: false, category: 'all' }
+            { uid: Date.now().toString(36).slice(-4), text: todoVal, marked: false, category: 'all', createdAt: Date.now(), expiresAt: null  }
         ]);
         setTodoVal('');
     };
@@ -70,27 +70,50 @@ const MyTodo = () => {
     }
 
     const deleteAll = () => {
-        localStorage.setItem("TODOS", JSON.stringify([]));
+        setTodos([]);
         setTodoVal("");
     }
+    
+     const onChangeTimeStamp = (timeVal, todoId) => {
+
+        if (timeVal === "timestamp") return;
+
+        setTodos(prev =>
+            prev.map(todo =>
+                todo.uid === todoId
+                    ? {
+                        ...todo,
+                        timestamp: timeVal,
+                        expiresAt: Date.now() + Number(timeVal) * 60000
+                    }
+                    : todo
+            )
+        );
+
+    };
+
 
     // Filter todos based on selected category
-    const filterByCategory = (selectedCategory) => {
-    if (selectedCategory === 'all') {
-        setFilteredTodos(todos);
-    } else {
-        const filtered = todos.filter(todo => todo.category === selectedCategory);
-        setFilteredTodos(filtered);
-    }
-}
+    const filteredTodos = useMemo(() => {
+        if (category === 'all') return todos;
+        return todos.filter(to => to.category === category);
 
-    // handle Category change 
-    const handleCategoryChange = (e) => {
-        let selectedCategory = e.target.value;
-        setCategory(selectedCategory);
-        filterByCategory(selectedCategory);
+    }, [category, todos]);
 
-    }
+    //handle Change the TimeStamp
+   
+
+    // for auto-Delete it after timeStamps Ends
+    useEffect(()=> {
+        const interval = setInterval(()=> {
+            const now = Date.now();
+            setTodos(prev => 
+                prev.filter(todo => !todo.expiresAt || now < todo.expiresAt)
+            )
+        }, 1000)
+        return () => clearInterval(interval);
+    }, []);
+
 
 
     useEffect(() => {
@@ -101,6 +124,8 @@ const MyTodo = () => {
     useEffect(() => {
         localStorage.setItem('TODOS', JSON.stringify(todos));
     }, [todos]);
+
+
 
 
     return (
@@ -160,7 +185,7 @@ const MyTodo = () => {
 
                         <select
                             value={category}
-                            onChange={(e) => handleCategoryChange(e)}
+                            onChange={(e) => setCategory(e.target.value)}
                             className="bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500 transition min-w-[120px]"
                         >
                             <option value="all">All</option>
@@ -177,16 +202,18 @@ const MyTodo = () => {
                 <div className="border-t border-zinc-800 mb-5" />
 
                 {/* Todo List */}
-                {todos.length === 0 ? (
+                {filteredTodos.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-14 gap-3">
                         <div className="w-12 h-12 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xl">
                             ✦
                         </div>
-                        <p className="text-zinc-500 text-sm">Add your first todo above</p>
+                        <p className="text-zinc-500 text-sm">
+                            {todos.length === 0 ? "Add your first todo above" : `No todos on  ${category} category`}
+                        </p>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-2">
-                        {todos.map((todo, idx) => (
+                        {filteredTodos.map((todo, idx) => (
                             <div
                                 key={todo.uid}
                                 className="flex items-center gap-3 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700/50 hover:border-zinc-600 rounded-2xl px-4 py-3.5 transition-all"
@@ -203,6 +230,20 @@ const MyTodo = () => {
 
                                 {/* Actions */}
                                 <div className="flex gap-1.5 shrink-0">
+
+                                    {/* Select category */}
+                                    <select
+                                        value={todo.timestamp || 'timestamp'}
+                                        onChange={(e) => onChangeTimeStamp(e.target.value, todo?.uid)}
+                                        className="bg-zinc-700/50 border border-zinc-600 text-zinc-200 text-xs rounded-lg px-2 py-1.5 outline-none focus:border-violet-500"
+                                    >
+                                        <option value="timestamp">TimeStamp</option>
+                                        <option value="2">2</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+
 
                                     <select
                                         value={todo.category || 'all'}
