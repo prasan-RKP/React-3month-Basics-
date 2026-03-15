@@ -11,28 +11,38 @@ import MovieSearch from './projects/API projects/Movie API/MovieSearch'
 import MyTodo from './projects/todos/MyTodo'
 import Item from './Pagination/Item'
 import HomePage from './HomePage'
+import PaginationAPI from './Pagination/PaginationAPI'
+import { Toaster } from 'sonner'
 //import NewTodo from './projects/todos/NewTodo'
 
 
 function App() {
 
   return (
-    <>
-      {/* <ShopHomepage /> */}
-      {/* <AddToCart /> */}
-      {/* <PassGen /> */}
-      {/* <LiftUp /> */}
-      {/* <MyWeather /> */}
-      {/* <MovieSearch /> */}
-      {/* <MyTodo /> */}
-      {/* <NewTodo /> */}
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/item' element={<Navigate to="/item/1" replace />} />
-        <Route path='/item/:page' element={<Item />} />
-      </Routes>
+      <div>
+        {/* <ShopHomepage /> */}
+        {/* <AddToCart /> */}
+        {/* <PassGen /> */}
+        {/* <LiftUp /> */}
+        {/* <MyWeather /> */}
+        {/* <MovieSearch /> */}
+        {/* <MyTodo /> */}
+        {/* <NewTodo /> */}
+        <Routes>
+          <Route path='/' element={<HomePage />} />
 
-    </>
+          {/* Pagination 1st Exampeple */}
+          {/* <Route path='/item' element={<Navigate to="/item/1" replace />} />
+        <Route path='/item/:page' element={<Item />} /> */}
+
+          {/* Pagination 2nd Exampeple */}
+          <Route path='/products' element={<Navigate to={"/products/1"} replace />} />
+          <Route path='/products/:page' element={<PaginationAPI />} />
+        </Routes>
+
+        <Toaster richColors position="top-right" />
+      </div>
+    
   )
 }
 
