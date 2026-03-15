@@ -21,7 +21,7 @@
 -> useState() allows track/update the state in a component.
 
 6) what is JSX ?
--> jsx is syntax extension, where js allows to HTML write inside it .
+-> jsx is syntax extension, where js allows to HTML write inside it . 
 
 7) what is component ?
 -> Component is a reusable block of code .

@@ -1,0 +1,24 @@
+
+Q.1) What is an APIs ?
+-> Api is a way for frontend to talk with backend.
+->In this process 'frontend' sends request and 'backend' sends response(usually JSON).
+
+Q.2) What are the two method to 'fetch' data ?
+-> one is '.fetch()' and 'axios.get()'
+
+Q.3) Why we use 'Axios' over 'fetch'
+-> 
+i) Automatic JSON parsing
+ii)Better for Error handling 
+iii)interceptors
+iv)request cancellation
+
+Q.4) Why we use 'useEffect for API calls ' ?
+-> Because we should call the API after component mounts
+
+Q.5) 4 API operations  
+->
+i) GET request -> fetch datas
+ii) POST request -> sends data to backend to save it 
+iii)PUT/PATCH > update data
+iV) DELETE dat -> delete data.
