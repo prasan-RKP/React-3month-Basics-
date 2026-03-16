@@ -13,6 +13,7 @@ import Item from './Pagination/Item'
 import HomePage from './HomePage'
 import PaginationAPI from './Pagination/PaginationAPI'
 import { Toaster } from 'sonner'
+import NumberPagination from './Pagination/NumberPagination'
 //import NewTodo from './projects/todos/NewTodo'
 
 
@@ -38,7 +39,11 @@ function App() {
           {/* Pagination 2nd Exampeple */}
           <Route path='/products' element={<Navigate to={"/products/1"} replace />} />
           <Route path='/products/:page' element={<PaginationAPI />} />
+
+         <Route path='/numberPage' element={<NumberPagination />} />
+
         </Routes>
+
 
         <Toaster richColors position="top-right" />
       </div>

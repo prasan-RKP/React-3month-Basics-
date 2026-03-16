@@ -22,7 +22,7 @@ iii) uses this.state and this.setState()
 
 Q.4) What is React Fragment ?
 -> The React Fragment is an invisible wrapper inside the wrapper multiple elements without using a extra DOM node.
-
++
 
 Q.5)What is Conditional Rendering ?
 -> Showing UI based on condition.
