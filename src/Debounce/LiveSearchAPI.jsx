@@ -16,31 +16,25 @@ const LiveSearchAPI = ({ results = [] }) => {
     let [input, setInput] = useState('');
 
 
-
-    //✅ filter function to call
-    const filteredItems = items.filter((item) =>
-        item.toLowerCase().includes(query.toLowerCase())
-    );
-
-
-    // ✅ Debounce fucntion
-    const debounce = (fn, wait) => {
-        let timeout;
+    const debounceFn = (fn, wait) => {
+        let timeId;
         return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => fn(...args), wait);
+            clearTimeout(timeId);
+            timeId = setTimeout(() => fn(...args), wait);
         }
     }
 
-    // ✅ Debounce fucntion
-    let debouncedQuery = useMemo(() => debounce((value) => setQuery(value), 800), []);
-
     const onChangeInput = (e) => {
-        const value = e.target.value
-        setInput(value);
-        debouncedQuery(value);
+        let val = e.target.value;
+        setInput(val);
+        debouncedAPI(val);
     }
 
+
+    const debouncedAPI = useMemo(() => debounceFn((val) => setQuery(val), 700), []);
+
+
+    console.log("Input val ->",input, query ? `Query val -> ${query}` : 'No Query Value');
 
 
 
