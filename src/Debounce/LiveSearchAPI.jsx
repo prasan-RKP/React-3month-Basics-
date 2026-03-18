@@ -1,19 +1,14 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
-const LiveSearchAPI = ({ results = [] }) => {
-
-    const items = [
-        'Apple', 'Avocado', 'Banana', 'Blueberry', 'Cherry',
-        'Coconut', 'Dragonfruit', 'Elderberry', 'Fig', 'Grape',
-        'Guava', 'Kiwi', 'Lemon', 'Lime', 'Lychee',
-        'Mango', 'Melon', 'Orange', 'Papaya', 'Peach',
-        'Pear', 'Pineapple', 'Plum', 'Pomegranate', 'Raspberry',
-        'Strawberry', 'Tangerine', 'Watermelon',
-    ]
+const LiveSearchAPI = () => {
 
     let [showDropdown, setShowDropdown] = useState(false);
     let [query, setQuery] = useState('');
     let [input, setInput] = useState('');
+    let [loading, setLaoding] = useState(false);
+
+    let [apiItems, setApiItems] = useState([]);
 
 
     const debounceFn = (fn, wait) => {
@@ -28,15 +23,44 @@ const LiveSearchAPI = ({ results = [] }) => {
         let val = e.target.value;
         setInput(val);
         debouncedAPI(val);
+        setShowDropdown(true);
     }
 
 
-    const debouncedAPI = useMemo(() => debounceFn((val) => setQuery(val), 700), []);
+    const debouncedAPI = useMemo(() => debounceFn((val) => setQuery(val), 500), []);
 
 
-    console.log("Input val ->",input, query ? `Query val -> ${query}` : 'No Query Value');
+    let filteredItems = apiItems.length > 0 ? apiItems.filter((item)=> item?.quote?.toLowerCase().includes(query.toLowerCase())) : [];
+
+    console.log("filtredItems", filteredItems);
 
 
+    // ✅ Created  a async function to store the API values.
+    const fetchApiData = async () => {
+        setLaoding(true);
+        try {
+            let res = await fetch('https://dummyjson.com/quotes');
+            if (!res.ok) {
+                toast.error("HTTP Error, Network Problem...");
+                return;
+            }
+
+            let data = await res.json();
+            setApiItems( data?.quotes);
+            setLaoding(false);
+        } catch (error) {
+            setLaoding(false);
+            toast.error("Something Went Wrong");
+        }
+        finally {
+            setLaoding(false);
+        }
+    }
+
+
+    useEffect(()=> {
+        fetchApiData();
+    }, []);
 
     return (
         <div
@@ -91,7 +115,10 @@ const LiveSearchAPI = ({ results = [] }) => {
                     {/* Clear Button */}
                     {query && (
                         <button
-                            onClick={() => setQuery('')}
+                            onClick={() => {
+                                setQuery('');
+                                setInput("");
+                            }}
                             className="absolute right-4 text-zinc-500 hover:text-white"
                         >
                             ✕
@@ -108,15 +135,15 @@ const LiveSearchAPI = ({ results = [] }) => {
                             border: '1px solid rgba(255,255,255,0.1)',
                             borderTop: 'none',
                         }}
-                    >
-                        {results.length > 0 ? (
+                    >   
+                        {filteredItems.length > 0 ? (
                             <ul className="max-h-64 overflow-y-auto">
-                                {results.map((item, i) => (
+                                {filteredItems.map((item, i) => (
                                     <li
                                         key={i}
-                                        className="px-4 py-3 cursor-pointer text-zinc-300 hover:text-white hover:bg-white/5"
+                                        className="px-4 py-3 cursor-pointer text-zinc-300 hover:text-black hover:bg-green-300"
                                     >
-                                        {item}
+                                        {`-> ${item?.quote}`}
                                     </li>
                                 ))}
                             </ul>
