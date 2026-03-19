@@ -16,6 +16,8 @@ import { Toaster } from 'sonner'
 import NumberPagination from './Pagination/NumberPagination'
 import DebounceEx from './Debounce/DebounceEx'
 import LiveSearchAPI from './Debounce/LiveSearchAPI'
+import DebounceFormSave from './Debounce/DebounceFormSave'
+import NoteApp from './contextAPI/NoteApp'
 //import NewTodo from './projects/todos/NewTodo'
 
 
@@ -44,7 +46,7 @@ function App() {
 
          <Route path='/numberPage' element={<NumberPagination />} />
 
-         <Route path='/debounce' element={<LiveSearchAPI />} />
+         <Route path='/debounce' element={<NoteApp />} />
 
         </Routes>
 

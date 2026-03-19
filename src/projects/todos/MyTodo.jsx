@@ -117,7 +117,7 @@ const MyTodo = () => {
 
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem('TODOS') || '[]');
+        const stored = JSON.parse(localStorage.getItem('TODOS') || []);
         setTodos(stored);
     }, []);
 

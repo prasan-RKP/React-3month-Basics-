@@ -140,7 +140,7 @@ export default function ShopHomepage() {
 
                                 {/* Cart Button */}
                                 <button
-                                    onClick={()=> setcartModal(true)}
+                                    onClick={() => setcartModal(true)}
                                     className="relative flex items-center gap-2 
              border border-stone-300 hover:border-stone-500 
              bg-white text-stone-700 text-sm 
@@ -286,7 +286,7 @@ export default function ShopHomepage() {
                     {/* Click outside to close cart */}
                     {cartModal && <div className="fixed inset-0 z-40" onClick={() => setCartOpen(false)} />}
                 </div>
-                
+
             </>
         );
 
