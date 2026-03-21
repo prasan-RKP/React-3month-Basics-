@@ -18,6 +18,7 @@ import DebounceEx from './Debounce/DebounceEx'
 import LiveSearchAPI from './Debounce/LiveSearchAPI'
 import DebounceFormSave from './Debounce/DebounceFormSave'
 import NoteApp from './contextAPI/NoteApp'
+import NoteSkeleton from './contextAPI/Docs/NoteSkeleton'
 //import NewTodo from './projects/todos/NewTodo'
 
 
@@ -47,6 +48,7 @@ function App() {
          <Route path='/numberPage' element={<NumberPagination />} />
 
          <Route path='/debounce' element={<NoteApp />} />
+         <Route path='/load' element={<NoteSkeleton />} />
 
         </Routes>
 

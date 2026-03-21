@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CreateNote from "./Docs/CreateNote";
 import EditNote from "./Docs/EditNote";
 import SeeNote from "./Docs/SeeNote";
+import NotesProvider, { NoteListCONTXT } from "./store/NoteList-store";
 
 const NoteApp = () => {
   const [activeTab, setActiveTab] = useState("see");
   const [editingNote, setEditingNote] = useState(null);
   const [filter, setFilter] = useState("All");
   const [hoveredNoteId, setHoveredNoteId] = useState(null);
-  const [selectedTag, setSelectedTag] = useState("Work");
   const [marked, setMarked] = useState(false);
+  const [selectedTag, setSelectedTag] = useState("Work");
+  const tags = ["Work", "Personal", "Reading", "Ideas"];
+
+  const {notes} = useContext(NoteListCONTXT);
 
   const SAMPLE_NOTES = [
     { id: 1, title: "Sprint Planning Session", content: "Review backlog items, estimate story points with the team. Check velocity from last sprint before estimating. Assign tickets accordingly.", tag: "Work", marked: true, date: "Mar 19" },
@@ -27,85 +31,91 @@ const NoteApp = () => {
     Ideas: "bg-amber-950 text-amber-400 border-amber-900",
   };
 
+  //const tags = ["Work", "Personal", "Reading", "Ideas"];
+
+
   const tabs = [
     { id: "add", label: "Add Note" },
-    { id: "see", label: "See Notes", count: SAMPLE_NOTES.length },
+    { id: "see", label: "See Notes", count: "📓" },
   ];
 
+  console.log(notes)
   const filters = ["All", "Marked", "Work", "Personal", "Reading", "Ideas"];
   const markedCount = SAMPLE_NOTES.filter((n) => n.marked).length;
-  const tags = ["Work", "Personal", "Reading", "Ideas"];
+
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <header
-        className="sticky top-0 z-40 border-b border-zinc-900"
-        style={{ background: "rgba(0,0,0,0.90)", backdropFilter: "blur(12px)" }}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-[60px] flex items-center gap-6">
-          <div className="flex items-center gap-2.5 mr-4">
-            <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-black text-sm font-bold select-none">
-              N
-            </div>
-            <span className="text-white font-semibold text-[15px] tracking-tight">Notely</span>
-          </div>
-
-          <nav className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-xl p-1">
-            {tabs.map((tab) => {
-              const active = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${active
-                    ? "bg-white text-zinc-900"
-                    : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
-                    }`}
-                >
-                  {tab.label}
-                  {tab.count !== undefined && (
-                    <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded-full ${active ? "bg-zinc-200 text-zinc-600" : "bg-zinc-800 text-zinc-600"
-                        }`}
-                    >
-                      {tab.count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="flex-1" />
-          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs text-zinc-400">
-            U
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-6 py-10">
-        {activeTab === "add" && (
-          <div className="max-w-2xl mx-auto py-2">
-            <div className="mb-8">
-              <h2 className="text-white text-2xl font-semibold">New Note</h2>
-              <p className="text-zinc-600 text-sm mt-1">Capture your thought before it slips away.</p>
+    <NotesProvider>
+      <div className="min-h-screen bg-black text-white">
+        <header
+          className="sticky top-0 z-40 border-b border-zinc-900"
+          style={{ background: "rgba(0,0,0,0.90)", backdropFilter: "blur(12px)" }}
+        >
+          <div className="max-w-6xl mx-auto px-6 h-[60px] flex items-center gap-6">
+            <div className="flex items-center gap-2.5 mr-4">
+              <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-black text-sm font-bold select-none">
+                N
+              </div>
+              <span className="text-white font-semibold text-[15px] tracking-tight">Notely</span>
             </div>
 
-            {/* Start */}
-            <CreateNote tags={tags} selectedTag={selectedTag} TAG_COLORS={TAG_COLORS} />
-            {/* End */}
+            <nav className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-xl p-1">
+              {tabs.map((tab) => {
+                const active = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${active
+                      ? "bg-white text-zinc-900"
+                      : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
+                      }`}
+                  >
+                    {tab.label}
+                    {tab.count !== undefined && (
+                      <span
+                        className={`text-[9px] px-1.5 py-0.5 rounded-full ${active ? "bg-zinc-200 text-zinc-600" : "bg-zinc-800 text-zinc-600"
+                          }`}
+                      >
+                        {tab.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+
+            <div className="flex-1" />
+            <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs text-zinc-400">
+              U
+            </div>
           </div>
-        )}
+        </header>
 
-        {activeTab === "see" && (
-         <SeeNote activeTab = {activeTab} SAMPLE_NOTES={SAMPLE_NOTES}  markedCount={markedCount} TAG_COLORS={TAG_COLORS} filters={filters} filter={filter} hoveredNoteId={hoveredNoteId} setHoveredNoteId={setHoveredNoteId} />
-        )}
-      </main>
+        <main className="max-w-6xl mx-auto px-6 py-10">
+          {activeTab === "add" && (
+            <div className="max-w-2xl mx-auto py-2">
+              <div className="mb-8">
+                <h2 className="text-white text-2xl font-semibold">New Note</h2>
+                <p className="text-zinc-600 text-sm mt-1">Capture your thought before it slips away.</p>
+              </div>
 
-      {editingNote && (
-        <EditNote editingNote={editingNote} setEditingNote={setEditingNote}  />
-      )}
-    </div>
+              {/* Start */}
+              <CreateNote tags={tags} setSelectedTag={setSelectedTag} selectedTag={selectedTag} TAG_COLORS={TAG_COLORS} />
+              {/* End */}
+            </div>
+          )}
+
+          {activeTab === "see" && (
+            <SeeNote activeTab={activeTab} SAMPLE_NOTES={SAMPLE_NOTES} markedCount={markedCount} TAG_COLORS={TAG_COLORS} filters={filters} filter={filter} hoveredNoteId={hoveredNoteId} setHoveredNoteId={setHoveredNoteId} />
+          )}
+        </main>
+
+        {editingNote && (
+          <EditNote editingNote={editingNote} setEditingNote={setEditingNote} />
+        )}
+      </div>
+    </NotesProvider>
   );
 };
 

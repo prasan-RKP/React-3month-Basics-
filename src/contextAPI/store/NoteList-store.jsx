@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useEffect, useReducer, useRef, useState } from "react";
 
 
 // step-1 -> create context
@@ -7,7 +7,8 @@ export const NoteListCONTXT = createContext({
     loading: false,
     addNote: () => { },
     editNote: () => { },
-    deleteNote: () => { }
+    deleteNote: () => { },
+    markNote: () => { }
 });
 
 
@@ -17,6 +18,12 @@ const noteReducer = (currNotes, action) => {
     switch (action.type) {
         case "ADD_NOTE":
             return [action.payload.note, ...currNotes];
+
+        case "MARK_NOTE":
+            return currNotes.map((note) =>
+                note?.uid === action.payload.uid
+                    ? { ...note, marked: action.payload.val } : note
+            );
 
         case "DEL_NOTE":
             return currNotes.filter((note) => note?.uid !== action.payload.uid);
@@ -40,100 +47,125 @@ const noteReducer = (currNotes, action) => {
 
 // step-3 (note Provider)
 
-const NotesProvider = ({children}) => {
+const NotesProvider = ({ children }) => {
 
     const [notes, dispatchNote] = useReducer(noteReducer, []);
-    const [loading,setLoading] = useState(false);
-
+    const [myLoading, setMyLoading] = useState(false);
+    const isInitialized = useRef(false);
     // Action for store initial notes
     const fetchNotes = async () => {
-        setLoading(true);
+        setMyLoading(true);
         try {
-            let notes = JSON.parse(localStorage.getItem("NOTE")) || [];
+            const notesRaw = localStorage.getItem("NOTE");
+            const notes = notesRaw ? JSON.parse(notesRaw) : [];
+
             dispatchNote({
                 type: "INT_NOTE",
-                payload: {notes: notes}
-            })
+                payload: { notes }
+            });
+
+            // enabling the first render
+            isInitialized.current = true;
         } catch (error) {
-            setLoading(false);
-            console.error("Error fetching notes action -> INT_NOTE :", error);
-        }
-        finally{
-            setLoading(false);
+            console.error("Error fetching notes action -> INT_NOTE:", error);
+        } finally {
+            setMyLoading(false);
         }
     }
 
     // Initial fetching Notes
-    useEffect(()=> {
-          fetchNotes();
+    useEffect(() => {
+        if (!isInitialized.current) return;
+        localStorage.setItem("NOTE", JSON.stringify(notes));
+    }, [notes]);
+
+
+    useEffect(() => {
+        fetchNotes();
     }, []);
 
 
     // ----- Add Note -----
-    const addNote = (data) => {
-        setLoading(true);
+    const addNote = (note) => {
+        setMyLoading(true);
         try {
             dispatchNote({
                 type: "ADD_NOTE",
-                payload: {note: data.note}
+                payload: { note }
             })
         } catch (error) {
-            setLoading(false);
-           console.error("Error adding note -> 'ADD_NOTE':", error);
+            console.error("Error adding note -> 'ADD_NOTE':", error);
+        }
+        finally {
+            setMyLoading(false);
+        }
+    }
+
+    // ---- Mark Note ----
+
+    const markNote = (uid, val) => {
+        setMyLoading(true);
+        try {
+            dispatchNote({
+                type: "MARK_NOTE",
+                payload: {uid, val}
+            })
+        } catch (error) {
+             console.log("Error marking note'MARK_NOTE'", error);
         }
         finally{
-            setLoading(false);
+            setMyLoading(false);
         }
     }
 
     //  ---- Delete Note ----
     const deleteNote = (uid) => {
-        setLoading(true);
+        setMyLoading(true);
         try {
             dispatchNote({
                 type: 'DEL_NOTE',
-                payload: {uid}
+                payload: { uid }
             })
         } catch (error) {
-            setLoading(false);
             console.log("Error delteing not 'DEL_NOTE'", error);
         }
-        finally{
-            setLoading(false);
+        finally {
+            setMyLoading(false);
         }
     }
 
 
     // ------ Edit Note ------
-    const editNote = (uid, data) => {
-        setLoading(true);
+    const editNote = (uid, note) => {
+        setMyLoading(true);
         try {
             dispatchNote({
                 type: "EDIT_NOTE",
                 payload: {
                     uid,
-                    title: data.title,
-                    content: data.content
+                    title: note.title,
+                    content: note.content
                 }
             })
         } catch (error) {
-            setLoading(false);
             console.error("Error editing note:", err);
         }
-        finally{
-            setLoading(false);
+
+        finally {
+            setMyLoading(false);
         }
     };
 
     return (
         <NoteListCONTXT.Provider
-         value={{
-            notes,
-            loading,
-            addNote,
-            deleteNote,
-            editNote
-         }}
+            value={{
+                notes,
+                loading: myLoading,
+                addNote,
+                deleteNote,
+                editNote,
+                markNote
+            }}
         >
             {children}
         </NoteListCONTXT.Provider>
@@ -141,3 +173,5 @@ const NotesProvider = ({children}) => {
 
 
 }
+
+export default NotesProvider;

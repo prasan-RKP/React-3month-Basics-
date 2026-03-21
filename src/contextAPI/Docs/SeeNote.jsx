@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { NoteListCONTXT } from '../store/NoteList-store';
+import NoteSkeleton from './NoteSkeleton';
 
-const SeeNote = ({activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, filter, hoveredNoteId, setHoveredNoteId}) => {
+const SeeNote = ({ activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, filter, hoveredNoteId, setHoveredNoteId }) => {
+
+    const { notes, loading, deleteNote, markNote } = useContext(NoteListCONTXT);
+
+
+    if (loading) {
+        return <NoteSkeleton />;
+    }
+
     return (
         <div>
             <div>
@@ -8,7 +18,7 @@ const SeeNote = ({activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, fil
                     <div>
                         <h2 className="text-white text-2xl font-semibold">Your Notes</h2>
                         <p className="text-zinc-600 text-sm mt-1">
-                            {SAMPLE_NOTES.length} notes &middot; {markedCount} marked
+                            {notes?.length} notes.
                         </p>
                     </div>
                     <div className="flex gap-2 flex-wrap justify-end">
@@ -56,18 +66,16 @@ const SeeNote = ({activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, fil
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {SAMPLE_NOTES.map((note) => {
+                    {notes.map((note) => {
                         const tagCls = TAG_COLORS[note.tag] || "bg-zinc-900 text-zinc-400 border-zinc-800";
-                        const isHovered = hoveredNoteId === note.id;
+                        const isHovered = hoveredNoteId === note.uid; // ✅ use note.uid consistently
 
                         return (
                             <div
-                                key={note.id}
-                                onMouseEnter={() => setHoveredNoteId(note.id)}
+                                key={note.uid}
+                                onMouseEnter={() => setHoveredNoteId(note.uid)} // ✅ uid here too
                                 onMouseLeave={() => setHoveredNoteId(null)}
-                                className={`relative rounded-xl p-5 flex flex-col gap-3 border transition-all duration-150 ${note.marked
-                                    ? "bg-zinc-950 border-amber-900/40"
-                                    : "bg-zinc-950 border-zinc-800"
+                                className={`relative rounded-xl p-5 flex flex-col gap-3 border transition-all duration-150 ${note.marked ? "bg-zinc-950 border-amber-900/40" : "bg-zinc-950 border-zinc-800"
                                     } ${isHovered ? "border-zinc-600" : ""}`}
                             >
                                 <div className="flex items-center justify-between">
@@ -88,18 +96,18 @@ const SeeNote = ({activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, fil
 
                                 <div className="h-5" />
 
+                                {/* ✅ Only these three buttons, shown on hover */}
                                 {isHovered && (
                                     <div className="absolute bottom-4 right-4 flex items-center gap-1.5">
-                                        <button className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-amber-400 hover:bg-amber-900/20 transition-colors">
+                                        <button onClick={()=> markNote(note?.uid, !note?.marked)} className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-amber-400 hover:bg-amber-900/20 transition-colors">
                                             {note.marked ? "unmark" : "mark"}
                                         </button>
-                                        <button
-                                            onClick={() => setEditingNote(note)}
-                                            className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700 transition-colors"
-                                        >
+                                        <button className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700 transition-colors">
                                             edit
                                         </button>
-                                        <button className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-900/20 transition-colors">
+                                        <button
+                                            onClick={() => deleteNote(note?.uid)}
+                                            className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-900/20 transition-colors">
                                             delete
                                         </button>
                                     </div>

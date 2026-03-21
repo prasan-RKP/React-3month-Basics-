@@ -110,7 +110,7 @@ const MyTodo = () => {
             setTodos(prev => 
                 prev.filter(todo => !todo.expiresAt || now < todo.expiresAt)
             )
-        }, 1000)
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
 
