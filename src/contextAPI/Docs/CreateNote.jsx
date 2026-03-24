@@ -9,16 +9,16 @@ const CreateNote = ({ TAG_COLORS, tags, selectedTag, setSelectedTag }) => {
 
     const [loading, setLoading] = useState(false);
 
-    // 1. Store the data for real time inpu value
+    // ✅1. Store the data for real time inpu value
     const [myTitle, setMyTitle] = useState('');
     const [myContent, setMyContent] = useState('');
 
 
-    // 2. To store debounced Values + to store both values timeout's
+    // ✅2. To store debounced Values + to store both values timeout's
     const debouncedValues = useRef({ title: "", content: "" });
     const timers = useRef({});
 
-    // 3. debounce function to store all teh debounced Value
+    // ✅3. debounce function to store all teh debounced Value
 
     const debounce = (key, value, delay = 1000) => {
         clearTimeout(timers.current[key]);
@@ -27,14 +27,14 @@ const CreateNote = ({ TAG_COLORS, tags, selectedTag, setSelectedTag }) => {
         }, delay);
     }
 
-    // 4.const onChnage Method to store all values instantChnags + debounced val
+    //✅ 4.const onChnage Method to store all values instantChnags + debounced val
     const handleChange = (key, value) => {
         if (key === "title") setMyTitle(value);
         if (key === "content") setMyContent(value);
         debounce(key, value);
 
     }
-    // 6. handleClear the input fileds
+    // ✅6. handleClear the input fileds
     const handleClear = () => {
         setMyTitle('')
         setMyContent('')
@@ -56,7 +56,6 @@ const CreateNote = ({ TAG_COLORS, tags, selectedTag, setSelectedTag }) => {
         addNote(note);
         handleClear();
         setLoading(false);
-
     }
 
     useEffect(() => {

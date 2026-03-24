@@ -19,7 +19,8 @@ import LiveSearchAPI from './Debounce/LiveSearchAPI'
 import DebounceFormSave from './Debounce/DebounceFormSave'
 import NoteApp from './contextAPI/NoteApp'
 import NoteSkeleton from './contextAPI/Docs/NoteSkeleton'
-//import NewTodo from './projects/todos/NewTodo'
+import UpDown from './Coding Challenge/upDown'
+import AdvTodo from './Practice folder/AdvTodo'
 
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
          <Route path='/numberPage' element={<NumberPagination />} />
 
          <Route path='/debounce' element={<NoteApp />} />
-         <Route path='/load' element={<NoteSkeleton />} />
+         <Route path='/up' element={<AdvTodo />} />
 
         </Routes>
 
