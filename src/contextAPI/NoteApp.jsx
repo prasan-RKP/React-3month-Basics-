@@ -4,7 +4,7 @@ import EditNote from "./Docs/EditNote";
 import SeeNote from "./Docs/SeeNote";
 import NotesProvider, { NoteListCONTXT } from "./store/NoteList-store";
 
-const NoteApp = () => {
+const NoteApp = ({}) => {
   const [activeTab, setActiveTab] = useState("see");
   const [editingNote, setEditingNote] = useState(null);
   const [filter, setFilter] = useState("All");
@@ -12,6 +12,7 @@ const NoteApp = () => {
   const [marked, setMarked] = useState(false);
   const [selectedTag, setSelectedTag] = useState("Work");
   const tags = ["Work", "Personal", "Reading", "Ideas"];
+  const [noteUid, setNoteUid] = useState('');
 
   const {notes} = useContext(NoteListCONTXT);
 
@@ -107,12 +108,12 @@ const NoteApp = () => {
           )}
 
           {activeTab === "see" && (
-            <SeeNote activeTab={activeTab} SAMPLE_NOTES={SAMPLE_NOTES} markedCount={markedCount} TAG_COLORS={TAG_COLORS} filters={filters} filter={filter} hoveredNoteId={hoveredNoteId} setHoveredNoteId={setHoveredNoteId} />
+            <SeeNote activeTab={activeTab} SAMPLE_NOTES={SAMPLE_NOTES} markedCount={markedCount} TAG_COLORS={TAG_COLORS} filters={filters} filter={filter} hoveredNoteId={hoveredNoteId} setHoveredNoteId={setHoveredNoteId} setEditingNote={setEditingNote} setNoteUid={setNoteUid} />
           )}
         </main>
 
         {editingNote && (
-          <EditNote editingNote={editingNote} setEditingNote={setEditingNote} />
+          <EditNote editingNote={editingNote} setEditingNote={setEditingNote} noteUid={noteUid}/>
         )}
       </div>
     </NotesProvider>

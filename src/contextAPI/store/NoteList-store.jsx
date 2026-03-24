@@ -137,14 +137,15 @@ const NotesProvider = ({ children }) => {
 
     // ------ Edit Note ------
     const editNote = (uid, note) => {
+        console.log('Note-store', `note UID-${uid} & noteVal -> ${note}`);
         setMyLoading(true);
         try {
             dispatchNote({
                 type: "EDIT_NOTE",
                 payload: {
                     uid,
-                    title: note.title,
-                    content: note.content
+                    newTitle: note.title,
+                    newContent: note.content
                 }
             })
         } catch (error) {

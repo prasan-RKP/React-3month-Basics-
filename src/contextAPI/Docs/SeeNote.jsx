@@ -2,10 +2,14 @@ import React, { useContext } from 'react'
 import { NoteListCONTXT } from '../store/NoteList-store';
 import NoteSkeleton from './NoteSkeleton';
 
-const SeeNote = ({ activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, filter, hoveredNoteId, setHoveredNoteId }) => {
+const SeeNote = ({ activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, filter, hoveredNoteId, setHoveredNoteId, setEditingNote, setNoteUid }) => {
 
     const { notes, loading, deleteNote, markNote } = useContext(NoteListCONTXT);
 
+    const handleInfo = (noteUid) => {
+       setEditingNote(true);
+       setNoteUid(noteUid); 
+    }
 
     if (loading) {
         return <NoteSkeleton />;
@@ -102,7 +106,9 @@ const SeeNote = ({ activeTab, SAMPLE_NOTES, markedCount, TAG_COLORS, filters, fi
                                         <button onClick={()=> markNote(note?.uid, !note?.marked)} className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-amber-400 hover:bg-amber-900/20 transition-colors">
                                             {note.marked ? "unmark" : "mark"}
                                         </button>
-                                        <button className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700 transition-colors">
+                                        <button 
+                                        onClick={()=>handleInfo(note?.uid)}
+                                        className="text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700 transition-colors">
                                             edit
                                         </button>
                                         <button
