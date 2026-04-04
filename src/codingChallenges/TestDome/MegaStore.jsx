@@ -3,17 +3,17 @@ import { toast } from "sonner";
 
 
 
-function throttle (fn, delay) {
-    let lastTime = 0;
+// function throttle (fn, delay) {
+//     let lastTime = 0;
 
-    return function(...args) {
-        let now = Date.now();
-        if(now - lastTime >= delay){
-            fn.apply(this, args);
-            lastTime = now;
-        }
-    }
-}
+//     return function(...args) {
+//         let now = Date.now();
+//         if(now - lastTime >= delay){
+//             fn.apply(this, args);
+//             lastTime = now;
+//         }
+//     }
+// }
 
 
 const MegaStore = () => {
@@ -37,7 +37,7 @@ const MegaStore = () => {
     const [weight, setWeight] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [discountedPrice, setDiscountedPrice] = useState(0);
-    const throttleRef = useRef(null);
+    //const throttleRef = useRef(null);
 
     //let val = 18/100 * 123;
 
@@ -79,12 +79,15 @@ const MegaStore = () => {
 
         }
         console.log("dis", myDiscountPrice);
+        setDiscountType('standard');
+        setWeight(0);
+        setTotalPrice(0);
         setDiscountedPrice(myDiscountPrice);
     }
 
-    if(!throttleRef.current){
-        throttleRef.current = throttle(calDiscount, 1200);
-    }
+    // if(!throttleRef.current){
+    //     throttleRef.current = throttle(calDiscount, 1200);
+    // }
 
 
 
@@ -96,7 +99,7 @@ const MegaStore = () => {
                     Price Calculator
                 </h2>
 
-                <form onSubmit={(e)=> throttleRef.current(e)}>
+                <form onSubmit={calDiscount}>
                     <div className="flex flex-col gap-4">
 
 
@@ -105,6 +108,7 @@ const MegaStore = () => {
                                 Select Type:
                             </label>
                             <select
+                                value={discountType}
                                 onChange={(e) => setDiscountType(e.target.value)}
                                 id="type"
                                 name="type"
@@ -121,6 +125,7 @@ const MegaStore = () => {
                                 Weight (kg):
                             </label>
                             <input
+                                value={weight}
                                 onChange={(e) => setWeight(e.target.value)}
                                 type="number"
                                 id="weight"
@@ -135,6 +140,7 @@ const MegaStore = () => {
                                 Total Price ($):
                             </label>
                             <input
+                              value={totalPrice}
                                 onChange={(e) => setTotalPrice(e.target.value)}
                                 type="number"
                                 id="totalPrice"
