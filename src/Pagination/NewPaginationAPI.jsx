@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import ProductSkeleton from "./ProductSkeleton";
 import { toast } from "sonner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, } from "react-router-dom";
 
 const NewPaginationAPI = () => {
 
-    const {page} = useParams();
+    const { page } = useParams();
     let currPage = parseInt(page) || 1;
+    const navigate = useNavigate();
 
 
     const TOTAL_PAGE = 20;
@@ -46,11 +47,14 @@ const NewPaginationAPI = () => {
     }
 
 
-    const goURL = (page) => navigate(`/products/${page}`);
+    const goURL = (page) => {
+        navigate(`/up/${page}`)
+    };
 
     useEffect(() => {
         fetchProducts();
     }, [currPage]);
+
 
 
     if (loading) {
@@ -73,16 +77,31 @@ const NewPaginationAPI = () => {
                 {/* Header */}
                 <div className="max-w-7xl mx-auto mb-10">
                     <p className="text-xs uppercase tracking-widest mb-2 text-[#d4a853]">
-                        Curated Collection
+                        Curated Collectionn
                     </p>
 
                     <h1 className="text-5xl font-bold mb-2 text-[#e8e8e8]">
-                        New Arrivals
+                        New Arrivals-bf
                     </h1>
 
                     <p className="text-sm text-[#444]">
                         {totalItems} products
                     </p>
+                </div>
+                {/* SearchBar */}
+                {/* 🔍 Search Bar */}
+                <div className="max-w-7xl mx-auto mb-8 flex items-center gap-3">
+
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        className="flex-1 px-4 py-3 rounded-xl bg-[#141414] border border-[#2a2a2a] text-[#e8e8e8] text-sm outline-none focus:border-[#d4a853] transition"
+                    />
+
+                    {/* <button className="px-6 py-3 rounded-xl text-sm uppercase tracking-widest bg-gradient-to-br from-[#d4a853] to-[#b8872e] text-black hover:opacity-90 transition">
+                        Search
+                    </button> */}
+
                 </div>
 
                 {/* Grid */}
@@ -90,7 +109,7 @@ const NewPaginationAPI = () => {
                     {error && products?.length === 0 && (
                         <div className="flex items-center justify-center h-[300px] border border-[#2a2a2a] rounded-2xl bg-[#141414]">
                             <p className="text-[#777] text-sm uppercase">
-                                  Failed to Fetch, Please try again Later..
+                                Failed to Fetch, Please try again Later..
                             </p>
                         </div>
                     )}
@@ -154,7 +173,7 @@ const NewPaginationAPI = () => {
 
                     <button
                         disabled={currPage === 1}
-                        onClick={()=> goURL(currPage + 1)} className={`px-5 py-2.5 rounded-xl text-xs border text-[#d4a853] ${currPage === 1 ? 'cursor-not-allowed' : ""}`}>
+                        onClick={() => goURL(currPage - 1)} className={`px-5 py-2.5 rounded-xl text-xs border text-[#d4a853] ${currPage === 1 ? 'cursor-not-allowed' : ""}`}>
                         Prev
                     </button>
 
@@ -168,7 +187,7 @@ const NewPaginationAPI = () => {
 
                     <button
                         disabled={currPage === totalPage}
-                        onClick={()=> goURL(currPage - 1)} className={`px-5 py-2.5 rounded-xl text-xs border text-[#d4a853] ${currPage === totalPage ? "cursor-not-allowed" : ""}`}>
+                        onClick={() => goURL(currPage + 1)} className={`px-5 py-2.5 rounded-xl text-xs border text-[#d4a853] ${currPage === totalPage ? "cursor-not-allowed" : ""}`}>
                         Next
                     </button>
 
