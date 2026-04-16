@@ -1,0 +1,35 @@
+body {
+  font-family: sans-serif;
+}
+
+.parent-div{
+  margin: auto;
+  padding: 8px;
+  padding-left: 16px;
+  height: 110px;
+  border: 2px solid gray;
+  border-radius: 4px;
+  margin-bottom: 7px;
+}
+
+.heading{
+  color: orange;
+}
+
+.parent-div .title {
+   font-weight: 700;
+   font-size: large;
+}
+.btn{
+  margin-top: 1rem;
+  padding: 9px;
+  border-radius: 6px;
+  border: none;
+  background-color: orange;
+  color: white;
+}
+
+.btn:hover{
+  cursor: pointer;
+}
+
