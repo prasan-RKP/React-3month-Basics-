@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import './jobBoard.css';
+import '../GreatFrontend/css/jobBoard.css';
 
 export default function JobBoard() {
   const [btnLoading, setBtnLoading] = useState(false);

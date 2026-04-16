@@ -1,0 +1,10 @@
+.btn{
+  display:  flex;
+  gap: 8px;
+  padding: 5px 5px 5px 6px;
+}
+
+.btn .active{
+  background-color: blueviolet;
+  color: white;
+}
