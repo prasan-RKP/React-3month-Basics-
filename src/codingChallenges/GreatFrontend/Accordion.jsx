@@ -23,18 +23,18 @@ const Accordion = () => {
 
 
 
-  const handleToggle = (idx) => {
-    if (idx === undefined) return;
-    console.log("calling", idx);
-    setOpenIndex((prev) => {
-      if (prev.includes(idx)) {
-        return prev.filter((i) => i !== idx);
+  const handleUpDown = (idx) => {
+    setOpenIndex((indexes) => {
+      if (indexes.includes(idx)) {
+        return indexes.filter((ind) => ind !== idx);
       }
+
       else {
-        return [...prev, idx];
+        return [idx, ...indexes];
       }
-    });
+    })
   }
+
 
   return (
     <div className="w-full max-w-md mx-auto mt-10 space-y-2">
@@ -42,11 +42,12 @@ const Accordion = () => {
         <div key={index} className="border rounded-md">
 
           {/* Header */}
-          <button onClick={() => handleToggle(index)} className="w-full flex justify-between items-center p-3 bg-gray-100">
+          <button onClick={() => handleUpDown(index)} className="w-full flex justify-between items-center p-3 bg-gray-100">
             <span>{item.title}</span>
 
             {/* Icon */}
             <span className="text-lg">
+              {/* "" : " */}
               {openIndex.includes(index) ? "▲" : "▼"}
             </span>
           </button>
