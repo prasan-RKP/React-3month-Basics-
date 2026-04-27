@@ -1,9 +1,40 @@
-import React from 'react'
+import { Loader2 } from 'lucide-react';
+import React, { useState } from 'react'
 
-const LeftSide = ({prod}) => {
+const LeftSide = ({ prod, setCartProducts, cartProducts }) => {
 
-    console.log()
-    
+    const [loading, setLoading] = useState(false);
+
+    // on delete Feature 
+    const onDelete = (uid) => {
+        if (!uid) return;
+        setLoading(true);
+
+        let updatedCarts = [...cartProducts.filter((pr) => pr?.id !== uid)];
+
+        localStorage.setItem("ADD_CART", JSON.stringify(updatedCarts));
+
+        setCartProducts(updatedCarts);
+        setLoading(false);
+    }
+
+
+    const saveForLater = (uid) => {
+        if (!uid) return;
+        setLoading(true);
+
+        let updatedCarts = [...cartProducts.map((pr) =>
+            pr?.id === uid ?
+                { ...pr, mark: true } :
+                pr
+        )];
+
+        localStorage.setItem("ADD_CART", JSON.stringify(updatedCarts));
+
+        setCartProducts(updatedCarts);
+        setLoading(false);
+    }
+
     return (
         <div>
             <div className="flex flex-col sm:flex-row gap-4 border rounded-lg p-4 bg-gray-900">
@@ -19,7 +50,7 @@ const LeftSide = ({prod}) => {
                     <div>
                         <h2 className="text-lg font-semibold">{prod?.category}</h2>
                         <p className="text-gray-400 text-sm">
-                           {prod?.desc}
+                            {prod?.desc}
                         </p>
                         <p className="mt-2 text-green-400 font-bold">₹ {prod?.price}</p>
                     </div>
@@ -36,11 +67,17 @@ const LeftSide = ({prod}) => {
 
                         {/* Buttons */}
                         <div className="flex gap-3">
-                            <button className="px-4 py-1 bg-red-500 rounded">
-                                Delete
+                            <button
+                                onClick={() => onDelete(prod?.id)}
+                                className="px-4 py-1 bg-red-500 rounded">
+                                {loading ? (
+                                    <Loader2 className='h-5 w-5 animate-spin text-white' />
+                                ) : "Delete"}
                             </button>
-                            <button className="px-4 py-1 bg-blue-500 rounded">
-                                Save for later
+                            <button
+                            onClick={() => saveForLater(prod?.id)}
+                             className="px-4 py-1 bg-blue-500 rounded">
+                               {prod?.mark ? "Saved": "Save for later"} 
                             </button>
                         </div>
 

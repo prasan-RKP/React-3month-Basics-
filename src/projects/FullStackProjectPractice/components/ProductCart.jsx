@@ -20,6 +20,9 @@ const ProductCart = () => {
 
 let subTotal = total + shipping + PLATFORM_FEE
 
+
+  
+
   return (
     <div className="bg-black text-white min-h-screen p-4">
       
@@ -38,7 +41,7 @@ let subTotal = total + shipping + PLATFORM_FEE
           )}
 
           {cartProducts.map((prod, idx) => 
-             <LeftSide  key={idx} prod={prod}/>
+             <LeftSide cartProducts={cartProducts} setCartProducts={setCartProducts}  key={idx} prod={prod}/>
           )}
           
           
@@ -55,7 +58,7 @@ let subTotal = total + shipping + PLATFORM_FEE
           <div className="space-y-2 text-gray-300">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>₹{total}</span>
+              <span>₹{total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
