@@ -7,7 +7,7 @@ const UseCountDown = () => {
 
     return (
         <div className='min-h-screen flex justify-center items-center bg-black'>
-            <div className='flex justify-center items-center h-[50px] w-[150px] bg-red-600 p-5 rounded-lg'>
+            <div className='flex justify-center items-center h-12.5 w-37.5 bg-red-600 p-5 rounded-lg'>
                 <p className='text-3xl text-white'>{count}</p>
             </div>
         </div>

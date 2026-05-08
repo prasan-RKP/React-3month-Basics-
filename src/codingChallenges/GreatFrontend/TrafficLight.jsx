@@ -21,6 +21,7 @@ const TrafficLight = () => {
     return () => {
       clearInterval(timer);
     }
+
   }, [light])
 
   return (
